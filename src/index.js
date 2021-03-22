@@ -100,6 +100,43 @@ class JuliaAPI {
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
 
+    listContests(params){
+        let config_copy = {...this.config};
+        config_copy["params"] = params;
+        return axios.get(`${this.protocol}://${this.address}/api/contests/`, config_copy)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    describeContest(id){
+        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    createContest(contest){
+        return axios.post(`${this.protocol}://${this.address}/api/contests/`, contest, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    updateContest(id, contest) {
+        return axios.put(`${this.protocol}://${this.address}/api/contests/${id}/`, contest, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    partialUpdateContest(id, contest) {
+        return axios.patch(`${this.protocol}://${this.address}/api/contests/${id}/`, contest, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    destroyContest(id) {
+        return axios.delete(`${this.protocol}://${this.address}/api/contests/${id}/`, this.config)
+            .then(response => ({status: response.status, data: response.data}))
+            .catch(error => ({status: error.response.status, data: error.response.data}))
+    }
 }
 
 export {JuliaAPI};
