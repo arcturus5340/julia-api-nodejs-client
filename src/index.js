@@ -45,6 +45,12 @@ class JuliaAPI {
             }
         })
     }
+
+    updateUser(id, user) {
+        return axios.put(`${this.protocol}://${this.address}/api/users/${id}/`, user, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
 }
 
 export {JuliaAPI};
