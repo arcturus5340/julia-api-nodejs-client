@@ -137,6 +137,26 @@ class JuliaAPI {
             .then(response => ({status: response.status, data: response.data}))
             .catch(error => ({status: error.response.status, data: error.response.data}))
     }
+
+    listSolutions(params){
+        let config_copy = {...this.config};
+        config_copy["params"] = params;
+        return axios.get(`${this.protocol}://${this.address}/api/solutions/`, config_copy)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    describeSolution(id){
+        return axios.get(`${this.protocol}://${this.address}/api/solutions/${id}`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    createSolution(contest){
+        return axios.post(`${this.protocol}://${this.address}/api/solutions/`, contest, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
 }
 
 export {JuliaAPI};
