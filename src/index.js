@@ -21,33 +21,43 @@ class JuliaAPI {
         let config_copy = {...this.config};
         config_copy["params"] = params;
         return axios.get(`${this.protocol}://${this.address}/api/users/`, config_copy)
-        .then( response => response.data )
-        .catch( error => {
-            console.log(error);
-        })
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
     }
+
+    describeUsers(id) {
+        return axios.get(`${this.protocol}://${this.address}/api/users/${id}`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
 
     createUser(user) {
         return axios.post(`${this.protocol}://${this.address}/api/users/`, user, this.config)
-        .then( response => response.data )
-        .catch( error => {
-            error = error.response;
-            if (error.data){
-                if (error.data.username) {
-                    throw `Invalid credentials: ${error.data.username}`;
-                }else if (error.data.password) {
-                    throw `Invalid credentials: ${error.data.password}`;
-                }else if (error.data.email){
-                    throw `Invalid credentials: ${error.data.email}`;
-             }
-            }else{
-                throw `Invalid credentials: A user with that username already exists.`;
-            }
-        })
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
     }
 
     updateUser(id, user) {
         return axios.put(`${this.protocol}://${this.address}/api/users/${id}/`, user, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    partialUpdateUser(id, user) {
+        return axios.patch(`${this.protocol}://${this.address}/api/users/${id}/`, user, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    destroyUser(id) {
+        return axios.delete(`${this.protocol}://${this.address}/api/users/${id}/`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    activate(id, key){
+        return axios.get(`${this.protocol}://${this.address}/api/users/${id}/activation/${key}`, this.config)
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
