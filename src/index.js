@@ -25,7 +25,7 @@ class JuliaAPI {
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
 
-    describeUsers(id) {
+    describeUser(id) {
         return axios.get(`${this.protocol}://${this.address}/api/users/${id}`, this.config)
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
@@ -61,6 +61,45 @@ class JuliaAPI {
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
+
+    listTasks(params){
+        let config_copy = {...this.config};
+        config_copy["params"] = params;
+        return axios.get(`${this.protocol}://${this.address}/api/tasks/`, config_copy)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    describeTask(id){
+        return axios.get(`${this.protocol}://${this.address}/api/tasks/${id}`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    createTask(task){
+        return axios.post(`${this.protocol}://${this.address}/api/tasks/`, task, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    updateTask(id, task) {
+        return axios.put(`${this.protocol}://${this.address}/api/tasks/${id}/`, task, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    partialUpdateTask(id, task) {
+        return axios.patch(`${this.protocol}://${this.address}/api/tasks/${id}/`, task, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    destroyTask(id) {
+        return axios.delete(`${this.protocol}://${this.address}/api/tasks/${id}/`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
 }
 
 export {JuliaAPI};
