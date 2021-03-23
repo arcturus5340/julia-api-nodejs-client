@@ -17,169 +17,134 @@ class JuliaAPI {
         }
     }
 
+    _request(method, path, options = {}) {
+        if(method === 'GET') {
+            let config_copy = {...this.config};
+            config_copy["params"] = options;
+            return axios.get(path, config_copy)
+                .then( response => ({status: response.status, data: response.data}) )
+                .catch( error => ({status: error.response.status, data: error.response.data}))
+        }else if(method === "POST"){
+            return axios.post(path, options, this.config)
+                .then( response => ({status: response.status, data: response.data}) )
+                .catch( error => ({status: error.response.status, data: error.response.data}))
+        }else if(method === "PUT"){
+            return axios.put(path, options, this.config)
+                .then( response => ({status: response.status, data: response.data}) )
+                .catch( error => ({status: error.response.status, data: error.response.data}))
+        }else if(method === "PATCH"){
+            return axios.patch(method, options, this.config)
+                .then( response => ({status: response.status, data: response.data}) )
+                .catch( error => ({status: error.response.status, data: error.response.data}))
+        }else if(method === "DELETE"){
+            return axios.delete(method, this.config)
+                .then(response => ({status: response.status, data: response.data}))
+                .catch(error => ({status: error.response.status, data: error.response.data}))
+        }
+    }
+
     listUsers(params) {
-        let config_copy = {...this.config};
-        config_copy["params"] = params;
-        return axios.get(`${this.protocol}://${this.address}/api/users/`, config_copy)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/users/`, params)
     }
 
     describeUser(id) {
-        return axios.get(`${this.protocol}://${this.address}/api/users/${id}/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/users/${id}/`)
     }
 
-
     createUser(user) {
-        return axios.post(`${this.protocol}://${this.address}/api/users/`, user, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("POST", `${this.protocol}://${this.address}/api/users/`, user)
     }
 
     updateUser(id, user) {
-        return axios.put(`${this.protocol}://${this.address}/api/users/${id}/`, user, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("PUT", `${this.protocol}://${this.address}/api/users/${id}/`, user)
     }
 
     partialUpdateUser(id, user) {
-        return axios.patch(`${this.protocol}://${this.address}/api/users/${id}/`, user, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("PATCH", `${this.protocol}://${this.address}/api/users/${id}/`, user)
     }
 
     destroyUser(id) {
-        return axios.delete(`${this.protocol}://${this.address}/api/users/${id}/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("DELETE", `${this.protocol}://${this.address}/api/users/${id}/`)
     }
 
     activate(id, key){
-        return axios.get(`${this.protocol}://${this.address}/api/users/${id}/activation/${key}/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/users/${id}/activation/${key}/`)
     }
 
     obtainToken(params){
-        return axios.post(`${this.protocol}://${this.address}/api/token-auth`, params, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("POST", `${this.protocol}://${this.address}/api/token-auth`, params)
     }
 
     refreshToken(params){
-        return axios.post(`${this.protocol}://${this.address}/api/token-refresh`, params, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("POST", `${this.protocol}://${this.address}/api/token-refresh`, params)
     }
 
     listTasks(params){
-        let config_copy = {...this.config};
-        config_copy["params"] = params;
-        return axios.get(`${this.protocol}://${this.address}/api/tasks/`, config_copy)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/tasks/`, params)
     }
 
     describeTask(id){
-        return axios.get(`${this.protocol}://${this.address}/api/tasks/${id}/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/tasks/${id}/`)
     }
 
     createTask(task){
-        return axios.post(`${this.protocol}://${this.address}/api/tasks/`, task, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("POST", `${this.protocol}://${this.address}/api/tasks/`, task)
     }
 
     updateTask(id, task) {
-        return axios.put(`${this.protocol}://${this.address}/api/tasks/${id}/`, task, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("PUT", `${this.protocol}://${this.address}/api/tasks/${id}/`, task)
     }
 
     partialUpdateTask(id, task) {
-        return axios.patch(`${this.protocol}://${this.address}/api/tasks/${id}/`, task, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("PATCH", `${this.protocol}://${this.address}/api/tasks/${id}/`, task)
     }
 
     destroyTask(id) {
-        return axios.delete(`${this.protocol}://${this.address}/api/tasks/${id}/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("DELETE", `${this.protocol}://${this.address}/api/tasks/${id}/`)
     }
 
     listContests(params){
-        let config_copy = {...this.config};
-        config_copy["params"] = params;
-        return axios.get(`${this.protocol}://${this.address}/api/contests/`, config_copy)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/contests/`, params)
     }
 
     listContestResults(id){
-        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}/results/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/contests/${id}/results/`)
     }
 
     listContestTasks(id){
-        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}/tasks/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/contests/${id}/tasks/`)
     }
 
     describeContest(id){
-        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/contests/${id}/`)
     }
 
     createContest(contest){
-        return axios.post(`${this.protocol}://${this.address}/api/contests/`, contest, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("POST", `${this.protocol}://${this.address}/api/contests/`, contest)
     }
 
     updateContest(id, contest) {
-        return axios.put(`${this.protocol}://${this.address}/api/contests/${id}/`, contest, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("PUT", `${this.protocol}://${this.address}/api/contests/${id}/`, contest)
     }
 
     partialUpdateContest(id, contest) {
-        return axios.patch(`${this.protocol}://${this.address}/api/contests/${id}/`, contest, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("PATCH", `${this.protocol}://${this.address}/api/contests/${id}/`, contest)
     }
 
     destroyContest(id) {
-        return axios.delete(`${this.protocol}://${this.address}/api/contests/${id}/`, this.config)
-            .then(response => ({status: response.status, data: response.data}))
-            .catch(error => ({status: error.response.status, data: error.response.data}))
+        return this._request("DELETE", `${this.protocol}://${this.address}/api/contests/${id}/`)
     }
 
     listSolutions(params){
-        let config_copy = {...this.config};
-        config_copy["params"] = params;
-        return axios.get(`${this.protocol}://${this.address}/api/solutions/`, config_copy)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/solutions/`, params)
     }
 
     describeSolution(id){
-        return axios.get(`${this.protocol}://${this.address}/api/solutions/${id}/`, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("GET", `${this.protocol}://${this.address}/api/solutions/${id}/`)
     }
 
     createSolution(contest){
-        return axios.post(`${this.protocol}://${this.address}/api/solutions/`, contest, this.config)
-            .then( response => ({status: response.status, data: response.data}) )
-            .catch( error => ({status: error.response.status, data: error.response.data}))
+        return this._request("POST", `${this.protocol}://${this.address}/api/solutions/`, contest)
     }
 }
 
