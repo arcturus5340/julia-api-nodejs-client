@@ -43,24 +43,27 @@ class JuliaAPI {
         }
     }
 
-    listUsers(params) {
-        return this._request("GET", `${this.protocol}://${this.address}/api/users/`, params)
+    listUser(options = {}) {
+        return this._request("GET", `${this.protocol}://${this.address}/api/users/`, options)
     }
 
     describeUser(id) {
         return this._request("GET", `${this.protocol}://${this.address}/api/users/${id}/`)
     }
 
-    createUser(user) {
-        return this._request("POST", `${this.protocol}://${this.address}/api/users/`, user)
+    createUser(username, password, email, options = {}) {
+        options.username = username;
+        options.password = password;
+        options.email = email;
+        return this._request("POST", `${this.protocol}://${this.address}/api/users/`, options)
     }
 
-    updateUser(id, user) {
-        return this._request("PUT", `${this.protocol}://${this.address}/api/users/${id}/`, user)
+    updateUser(id, options = {}) {
+        return this._request("PUT", `${this.protocol}://${this.address}/api/users/${id}/`, options)
     }
 
-    partialUpdateUser(id, user) {
-        return this._request("PATCH", `${this.protocol}://${this.address}/api/users/${id}/`, user)
+    partialUpdateUser(id, options = {}) {
+        return this._request("PATCH", `${this.protocol}://${this.address}/api/users/${id}/`, options)
     }
 
     destroyUser(id) {
@@ -71,40 +74,47 @@ class JuliaAPI {
         return this._request("GET", `${this.protocol}://${this.address}/api/users/${id}/activation/${key}/`)
     }
 
-    obtainToken(params){
-        return this._request("POST", `${this.protocol}://${this.address}/api/token-auth`, params)
+    obtainToken(username, password, options = {}){
+        options.username = username;
+        options.password = password;
+        return this._request("POST", `${this.protocol}://${this.address}/api/token-auth`, options)
     }
 
-    refreshToken(params){
-        return this._request("POST", `${this.protocol}://${this.address}/api/token-refresh`, params)
+    refreshToken(token, options = {}){
+        options.token = token;
+        return this._request("POST", `${this.protocol}://${this.address}/api/token-refresh`, options)
     }
 
-    listTasks(params){
-        return this._request("GET", `${this.protocol}://${this.address}/api/tasks/`, params)
+    listTasks(options = {}){
+        return this._request("GET", `${this.protocol}://${this.address}/api/tasks/`, options)
     }
 
     describeTask(id){
         return this._request("GET", `${this.protocol}://${this.address}/api/tasks/${id}/`)
     }
 
-    createTask(task){
-        return this._request("POST", `${this.protocol}://${this.address}/api/tasks/`, task)
+    createTask(title, content, contest, order, options = {}){
+        options.title = title;
+        options.content = content;
+        options.contest = contest;
+        options._order = order;
+        return this._request("POST", `${this.protocol}://${this.address}/api/tasks/`, options)
     }
 
-    updateTask(id, task) {
-        return this._request("PUT", `${this.protocol}://${this.address}/api/tasks/${id}/`, task)
+    updateTask(id, options = {}) {
+        return this._request("PUT", `${this.protocol}://${this.address}/api/tasks/${id}/`, options)
     }
 
-    partialUpdateTask(id, task) {
-        return this._request("PATCH", `${this.protocol}://${this.address}/api/tasks/${id}/`, task)
+    partialUpdateTask(id, options = {}) {
+        return this._request("PATCH", `${this.protocol}://${this.address}/api/tasks/${id}/`, options)
     }
 
     destroyTask(id) {
         return this._request("DELETE", `${this.protocol}://${this.address}/api/tasks/${id}/`)
     }
 
-    listContests(params){
-        return this._request("GET", `${this.protocol}://${this.address}/api/contests/`, params)
+    listContests(options = {}){
+        return this._request("GET", `${this.protocol}://${this.address}/api/contests/`, options)
     }
 
     listContestResults(id){
@@ -119,32 +129,37 @@ class JuliaAPI {
         return this._request("GET", `${this.protocol}://${this.address}/api/contests/${id}/`)
     }
 
-    createContest(contest){
-        return this._request("POST", `${this.protocol}://${this.address}/api/contests/`, contest)
+    createContest(title, description, options = {}){
+        options.title = title;
+        options.description = description;
+        return this._request("POST", `${this.protocol}://${this.address}/api/contests/`, options)
     }
 
-    updateContest(id, contest) {
-        return this._request("PUT", `${this.protocol}://${this.address}/api/contests/${id}/`, contest)
+    updateContest(id, options = {}) {
+        return this._request("PUT", `${this.protocol}://${this.address}/api/contests/${id}/`, options)
     }
 
-    partialUpdateContest(id, contest) {
-        return this._request("PATCH", `${this.protocol}://${this.address}/api/contests/${id}/`, contest)
+    partialUpdateContest(id, options = {}) {
+        return this._request("PATCH", `${this.protocol}://${this.address}/api/contests/${id}/`, options)
     }
 
     destroyContest(id) {
         return this._request("DELETE", `${this.protocol}://${this.address}/api/contests/${id}/`)
     }
 
-    listSolutions(params){
-        return this._request("GET", `${this.protocol}://${this.address}/api/solutions/`, params)
+    listSolutions(options){
+        return this._request("GET", `${this.protocol}://${this.address}/api/solutions/`, options)
     }
 
     describeSolution(id){
         return this._request("GET", `${this.protocol}://${this.address}/api/solutions/${id}/`)
     }
 
-    createSolution(contest){
-        return this._request("POST", `${this.protocol}://${this.address}/api/solutions/`, contest)
+    createSolution(task, lang, code, options = {}){
+        options.task = task;
+        options.lang = lang;
+        options.code = code;
+        return this._request("POST", `${this.protocol}://${this.address}/api/solutions/`, options)
     }
 }
 
