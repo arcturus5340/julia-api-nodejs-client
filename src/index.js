@@ -26,7 +26,7 @@ class JuliaAPI {
     }
 
     describeUser(id) {
-        return axios.get(`${this.protocol}://${this.address}/api/users/${id}`, this.config)
+        return axios.get(`${this.protocol}://${this.address}/api/users/${id}/`, this.config)
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
@@ -57,7 +57,19 @@ class JuliaAPI {
     }
 
     activate(id, key){
-        return axios.get(`${this.protocol}://${this.address}/api/users/${id}/activation/${key}`, this.config)
+        return axios.get(`${this.protocol}://${this.address}/api/users/${id}/activation/${key}/`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    obtainToken(params){
+        return axios.post(`${this.protocol}://${this.address}/api/token-auth`, params, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    refreshToken(params){
+        return axios.post(`${this.protocol}://${this.address}/api/token-refresh`, params, this.config)
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
@@ -71,7 +83,7 @@ class JuliaAPI {
     }
 
     describeTask(id){
-        return axios.get(`${this.protocol}://${this.address}/api/tasks/${id}`, this.config)
+        return axios.get(`${this.protocol}://${this.address}/api/tasks/${id}/`, this.config)
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
@@ -108,8 +120,20 @@ class JuliaAPI {
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
 
+    listContestResults(id){
+        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}/results/`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
+    listContestTasks(id){
+        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}/tasks/`, this.config)
+            .then( response => ({status: response.status, data: response.data}) )
+            .catch( error => ({status: error.response.status, data: error.response.data}))
+    }
+
     describeContest(id){
-        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}`, this.config)
+        return axios.get(`${this.protocol}://${this.address}/api/contests/${id}/`, this.config)
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
@@ -147,7 +171,7 @@ class JuliaAPI {
     }
 
     describeSolution(id){
-        return axios.get(`${this.protocol}://${this.address}/api/solutions/${id}`, this.config)
+        return axios.get(`${this.protocol}://${this.address}/api/solutions/${id}/`, this.config)
             .then( response => ({status: response.status, data: response.data}) )
             .catch( error => ({status: error.response.status, data: error.response.data}))
     }
