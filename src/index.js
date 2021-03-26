@@ -43,6 +43,10 @@ class JuliaAPI {
         }
     }
 
+    setAuthToken(token){
+        this.config.headers['Authorization'] = `JWT ${token}`;
+    }
+
     listUser(options = {}) {
         return this._request("GET", `${this.protocol}://${this.address}/api/users/`, options)
     }
