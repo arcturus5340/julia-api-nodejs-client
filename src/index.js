@@ -159,10 +159,7 @@ class JuliaAPI {
         return this._request("GET", `${this.protocol}://${this.address}/api/solutions/${id}/`)
     }
 
-    createSolution(task, lang, code, options = {}){
-        options.task = task;
-        options.lang = lang;
-        options.code = code;
+    createSolution(options = {}){
         return this._request("POST", `${this.protocol}://${this.address}/api/solutions/`, options)
     }
 }
