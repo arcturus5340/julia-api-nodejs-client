@@ -55,14 +55,14 @@ class JuliaAPI {
         return this._request("GET", `${this.protocol}://${this.address}/api/users/${id}/`)
     }
 
-    createUser(username, password, email, options = {}) {
-        options.username = username;
-        options.password = password;
-        options.email = email;
+    createUser(username, password, email, options = new FormData()) {
+        options.append('username', username);
+        options.append('password', password);
+        options.append('email', email);
         return this._request("POST", `${this.protocol}://${this.address}/api/users/`, options)
     }
 
-    updateUser(id, options = {}) {
+    updateUser(id, options = new FormData()) {
         return this._request("PUT", `${this.protocol}://${this.address}/api/users/${id}/`, options)
     }
 
@@ -74,8 +74,22 @@ class JuliaAPI {
         return this._request("DELETE", `${this.protocol}://${this.address}/api/users/${id}/`)
     }
 
-    activate(id, key){
+    activate(id, key) {
         return this._request("GET", `${this.protocol}://${this.address}/api/users/${id}/activation/${key}/`)
+    }
+
+    resetPassword(username, email, options = new FormData()){
+        if (!!username){
+            options.append('username', username);
+        }else if (!!email){
+            options.append('email', email);
+        }
+        return this._request("POST", `${this.protocol}://${this.address}/api/users/reset_password/`, options)
+    }
+
+    resetPasswordConfirm(id, key, new_password, options = {}){
+        options.password = new_password;
+        return this._request("POST", `${this.protocol}://${this.address}/api/users/${id}/reset_password/${key}/confirm/`, options)
     }
 
     obtainToken(username, password, options = {}){
