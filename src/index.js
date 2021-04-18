@@ -21,10 +21,10 @@ class JuliaAPI {
     }
 
     _request(method, path, options = {}) {
-        if(this._auto_refresh && (path !== '/api/token-auth' && path !== '/api/token-refresh')){
+        if(this._auto_refresh && (path !== '/api/token-auth' && path !== '/api/token-refresh' && (method !== 'POST' || path !== '/api/users'))){
+            delete this.config.headers['Authorization'];
             if (new Date().getTime() - this.jwt_cookie_expiration_date >= this.cookie_expires){
                 Cookies.remove('JWT');
-                delete this.config.headers['Authorization']
             }else{
                 axios.post('/api/token-refresh', {token: Cookies.get('JWT')}, this.config).then(
                     response => {
@@ -71,7 +71,7 @@ class JuliaAPI {
     _updateToken(token){
         this.jwt_cookie_expiration_date = new Date(new Date().getTime() + this.cookie_expires * 1000);
         Cookies.remove('JWT');
-        Cookies.set('JWT', token, {expires: this.jwt_cookie_expiration_date, secure: this.secure});
+        Cookies.set('JWT', token, {expires: this.jwt_cookie_expiration_date, secure: this.secure, sameSite: 'Strict'});
     }
 
     listUser(options = {}) {
